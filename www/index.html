@@ -28,11 +28,35 @@
     </head>
     <body>
         <div class="app">
-            <h1>Apache Cordova</h1>
+          <!--  <h1>GGIT</h1> -->
+            <h2>
             <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
+                <p class="event listening">No Box Found</p>
+                <p class="event received">Box is Ready</p>
+            </div><h2>
+        </div>
+        <div class="test">
+            <form action="" id="form-sender-config" class="" style="">
+            <label for="form-serial">Set up your GGIT box:</label>
+            <input id="form-serial" type="number" placeholder="1234" />
+            <label for="form-sender-email">Put your Email address:</label>
+            <input id="form-sender-email" type="email" placeholder="example@ggit.com" />
+            <label for="form-recipient-email">Put your recipient's Email address:</label>
+            <input id="form-recipient-email" type="email" placeholder="example@ggit.com" />
+
+            </br>
+            <a id="btn-submit" data-role="button" data-icon="plus">Submit</a>
+
+<!--
+                <label for="form-desc">More Info:</label>
+                <textarea name="" id="form-desc" placeholder="Add any additional information here..."></textarea>
+                <input id="form-uuid" type="hidden" />
+                <input id="form-completedby" type="hidden" />
+                <a id="btn-cancel" data-role="button" data-icon="delete" href="#page-main">Cancel</a>
+                <a id="btn-submit" data-role="button" data-icon="plus">Submit</a>
+                <a id="btn-did-it" class="hideaway" data-role="button" data-icon="check" href="#page-main">I did it!</a>
+                <a id="btn-forget-it" class="hideaway" data-role="button" data-icon="trash" href="#page-main">Forget it!</a> -->
+            </form>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

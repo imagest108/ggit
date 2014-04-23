@@ -55,7 +55,8 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        app.apigeeConfig();
+        //app.senderConfig();
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -69,7 +70,109 @@ var app = {
         console.log('Received Event: ' + id);
 
     },
+    senderConfig: function() {
+
+      var appUser;
+
+      var client = new Apigee.Client({
+          orgName: 'JessJJ', // Your Apigee.com username for App Services
+          appName: 'sandbox' // Your Apigee App Services app name
+      });
+
+      console.log('Apigee client connected');
+
+      var boxes = new Apigee.Collection({
+            'client': client,
+            'type': 'devices'
+      });
+
+      client.getLoggedInUser(function(err, data, user) {
+          if (err) {
+              //error - could not get logged in user
+              window.location = "#";
+          } else {
+              if (client.isLoggedIn()) {
+                  appUser = user;
+                  //loadItems(myList);
+                  console.log(user);
+              }
+          }
+      });
+
+      function login(username, password) {
+
+          if (username && password) {
+              var username = username;
+              var password = password;
+          } else {
+              // var username = $("#form-username").val();
+              // var password = $("#form-password").val();
+              console.log("no username && password");
+          }
+
+          client.login(username, password,
+              function(err) {
+                  if (err) {
+                      console.log(err)
+                  } else {
+                      //login succeeded
+                      client.getLoggedInUser(function(err, data, user) {
+                          if (err) {
+                              //error - could not get logged in user
+                          } else {
+                              if (client.isLoggedIn()) {
+                                  appUser = user;
+                                  console.log("you're logged in!");
+                              }
+                          }
+                      });
+                  }
+              }
+          );
+      }
+
+      $('#form-sender-config').on('click', '#btn-submit', function() {
+            console.log("sending addBoxRequest..");
+            if ($('#form-serial').val() !== '') {
+              var newBox = {
+                  'serialNum': $('#form-serial').val(),
+                  'sender': $('#form-sender-email').val(),
+                  'recipient': $('#form-recipient-email').val()
+              }
+              var account = $('#form-sender-email').val();
+              var password = $('#form-serial').val();
+              var role = "sender";
+
+              boxes.addEntity(newBox, function(error, response) {
+                  if (error) {
+                    alert("write failed");
+                  } else {
+                    alert("You create a new box!");
+                  }
+              });
+
+              client.signup(account,password,role, function(err, data) {
+                if (err) {
+                    console.log('FAIL')
+                } else {
+                    console.log('SUCCESS');
+                    login(account, password);
+                }
+            });
+          }
+          $("#form-sender-email").val('');
+          $("#form-recipient-email").val('');
+          $("#form-serial").val('');
+
+      });
+
+
+    },
+
     apigeeConfig: function() {
+
+      $('.app').style.display = "none";
+      $('.test').style.display = "block";
 
       var dataclient = new Apigee.Client({
           orgName: 'JessJJ', // Your Apigee.com username for App Services
@@ -118,6 +221,6 @@ var app = {
         }
 
       }
-      loadItems(box);
+      //loadItems(box);
     }
   };
