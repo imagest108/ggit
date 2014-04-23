@@ -77,16 +77,16 @@ body {
 
 /* Portrait layout (default) */
 .app {
-    background:url(../img/logo_.png) no-repeat center top; /* 170px x 200px */
+    background:url(../img/logo_.png) no-repeat left top; /* 170px x 200px */
     position:absolute;             /* position in the center of the screen */
     left:50%;
     top:50%;
     height:50px;                   /* text area height */
-    width:550px;                   /* text area width */ß
+    width:550px;                   /* text area width */
     text-align:center;
     font-family: 'quicksandregular';
     padding:152px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -115px;  /* offset vertical: half of image height and text area height */
+    margin:-115px 0px 0px -280px;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
 }
 
@@ -94,8 +94,8 @@ body {
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
     .app {
         background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -600px;  /* offset vertical: half of image height */
+        padding:75px 0px 75px 70px;  /* padding-top + padding-bottom + text area = image height */
+        margin:-90px 0px 0px 0px;  /* offset vertical: half of image height */
                                       /* offset horizontal: half of image width and text area width */
 
     }
@@ -176,4 +176,79 @@ h2 {
 #page1, #page2, #page3, #page4, #page5, #page6, #page7, #page8, #page9, #page10{
 
   display:none;
+}
+
+#page1 {
+
+  background:url(../img/page1.png) no-repeat left top; /* 170px x 200px */
+  position:absolute;             /* position in the center of the screen */
+  left:50%;
+  top:50%;
+  height:50px;                   /* text area height */
+  width:550px;                   /* text area width */
+  text-align:center;
+  font-family: 'quicksandregular';
+  padding:152px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+  margin:-115px 0px 0px -280px;  /* offset vertical: half of image height and text area height */
+                                 /* offset horizontal: half of text area width */
+
+
+}
+form {
+    line-height: 24px;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    margin: auto;
+    margin-left: 10%;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+
+input {
+    width:70%;
+    display: block;
+    border: 1px solid #999;
+    height: 25px;
+    margin-top: 10px;
+    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+#selectOne{
+    height: 500px;
+    text-align: center;
+}
+
+
+div.user-role{
+    vertical-align:middle;
+    display:inline-block;
+
+}
+
+.myButton {
+    background-color:#81B497;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:2px;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:arial;
+    font-size:17px;
+    padding:12px 31px;
+    text-decoration:none;
+    width: 100px;
+}
+.myButton:hover {
+    background-color:#66E0C2;
+}
+.myButton:active {
+    position:relative;
+    top:1px;
 }

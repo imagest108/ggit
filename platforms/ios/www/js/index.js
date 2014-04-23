@@ -38,10 +38,16 @@ var dataModule = {
 }
 
 
+var boxUUID;
+
+var appUser;
+
+
 var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+        //app.senderConfig();
     },
     // Bind Event Listeners
     //
@@ -87,7 +93,7 @@ var app = {
       //     app.selectOne();
       //   }
       // });
-      setTimeout(displayConnection, 1000); ////temporary function for next page
+      setTimeout(displayConnection, 3000); ////temporary function for next page
 
     // display BLE connection results in html
       function displayConnection(){
@@ -115,9 +121,6 @@ var app = {
 
     //**********p4-1: sender configuration- Set up your GGIT box **********//
     senderConfig: function() {
-      console.log('senderConfig');
-
-      var appUser;
 
       var client = new Apigee.Client({
           orgName: 'JessJJ', // Your Apigee.com username for App Services
@@ -130,6 +133,10 @@ var app = {
             'client': client,
             'type': 'devices'
       });
+
+      //console.log('senderConfig');
+      $('#page3').css('display','none');
+      $('#page4').css('display','block');
 
       client.getLoggedInUser(function(err, data, user) {
           if (err) {
@@ -182,7 +189,7 @@ var app = {
               var newBox = {
                   'serialNum': $('#form-serial').val(),
                   'sender': $('#form-sender-email').val(),
-                  'recipient': $('#form-recipient-email').val()
+                  'recipient': $('#form-recipient-email').val(),
               }
               var account = $('#form-sender-email').val();
               var password = $('#form-serial').val();
@@ -193,17 +200,33 @@ var app = {
                     alert("write failed");
                   } else {
                     alert("You create a new box!");
+
+                    boxUUID = response._data.uuid;
+                    /*
+                    var options = {
+                        "type": "devices",
+                        "uuid": response._data.uuid
+                    }
+                    client.getEntity(options, function(error, response) {
+                          if (error) {
+                              alert("error!");
+                          } else {
+                              console.log(options.uuid);
+                          }
+                    });
+                    */
+                    app.senderInit();
                   }
               });
 
-              client.signup(account,password,role, function(err, data) {
-                if (err) {
-                    console.log('FAIL')
-                } else {
-                    console.log('SUCCESS');
-                    login(account, password);
-                }
-            });
+              // client.signup(account,password,role, function(err, data) {
+              //   if (err) {
+              //       console.log('FAIL')
+              //   } else {
+              //       console.log('SUCCESS');
+              //       login(account, password);
+              //   }
+              // });
           }
           $("#form-sender-email").val('');
           $("#form-recipient-email").val('');
@@ -214,11 +237,89 @@ var app = {
 
     },
 
-    /*
-    apigeeConfig: function() {
+    //**********p4-2: welcome sender **********//
+    senderInit: function() {
 
-      $('.app').style.display = "none";
-      $('.test').style.display = "block";
+    //button display in html
+      $('#page4').css('display','none');
+      $('#page5').css('display','block');
+
+      $('#page5').on('click', '#next', function() {
+
+        app.setGoal();
+
+      });
+    },
+
+    //**********p4-3: set up a goal for the recipient **********//
+    setGoal: function() {
+
+    var client = new Apigee.Client({
+        orgName: 'JessJJ', // Your Apigee.com username for App Services
+        appName: 'sandbox' // Your Apigee App Services app name
+    });
+
+    console.log('Apigee client connected');
+
+    var boxes = new Apigee.Collection({
+          'client': client,
+          'type': 'devices'
+    });
+
+    //button display in html
+      $('#page5').css('display','none');
+      $('#page6').css('display','block');
+
+      $('#form-set-goal').on('click', '#btn-submit', function() {
+            console.log("sending goalSetupRequest..");
+            if ($('#form-steps').val() !== '' && $('#form-freq').val() !== '') {
+
+              var amount = $('#form-steps').val();
+              var frequency = $('#form-freq').val();
+
+              var options = {
+                  "type": "devices",
+                  "uuid": boxUUID
+              }
+              client.getEntity(options, function(error, response) {
+                    if (error) {
+                        alert("error!");
+                    } else {
+                        //console.log("Success to retrieve entity!");
+                        var properties = {
+                            'client':client, //Required
+                            'data':{'type':'devices',
+                            'uuid':boxUUID, //UUID of the entity to be updated is required
+                            'goal':{
+                              'frequency':frequency,
+                              'amount':amount,
+                              'dataType':'steps'
+                                  }
+                            }
+                        };
+
+                        //Create a new entity object that contains the updated properties
+                        var entity = new Apigee.Entity(properties);
+
+                        //Call Entity.save() to initiate the API PUT request
+                        entity.save(function (error, result) {
+
+                            if (error) {
+                                //error
+                                alert("error!");
+                        	} else {
+                        		//success
+                                alert("You set up a new goal!");
+                                app.confirmGoal();
+                        	}
+
+                        });
+                      }
+              });
+            }
+      });
+    },
+    confirmGoal: function() {
 
       var dataclient = new Apigee.Client({
           orgName: 'JessJJ', // Your Apigee.com username for App Services
@@ -229,8 +330,9 @@ var app = {
 
       var box = new Apigee.Collection({
             'client': dataclient,
-            'type': 'devices'
+            'type': 'devices',
       });
+
 
       function loadItems(collection) {
           collection.fetch(
@@ -250,7 +352,8 @@ var app = {
 
       function displayData(collection) {
 
-        $('.app').html("");
+        $('h1').html("");
+        $('form').html("");
         while (collection.hasNextEntity()) {
             var item = collection.getNextEntity();
             var goalobj = item.get('goal');
@@ -261,13 +364,13 @@ var app = {
             goalStatement += goalobj.frequency;
             goalStatement += "days";
 
-            $('.app').append('<p>'+goalStatement+'</p>');
+            $('h1').html(goalStatement);
             // console.log(goalobj.amount);
             // console.log(item.get('goal'));
         }
 
       }
-      //loadItems(box);
+      loadItems(box);
     }
-    */
+
   };
