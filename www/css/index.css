@@ -171,3 +171,9 @@ h2 {
     margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
 
 }
+
+
+#page1, #page2, #page3, #page4, #page5, #page6, #page7, #page8, #page9, #page10{
+
+  display:none;
+}

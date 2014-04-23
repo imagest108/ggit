@@ -37,6 +37,7 @@ var dataModule = {
    "command":"lock"
 }
 
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -55,10 +56,11 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        //app.senderConfig();
+
 
     },
     // Update DOM on a Received Event
+    //**********p1: Welcome screen**********//
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
@@ -66,11 +68,54 @@ var app = {
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
+        $('#page1').css('display','block');
 
         console.log('Received Event: ' + id);
+        app.bleSetup();
 
     },
+
+    //**********p2: GGIT Connection / Box connection status here Change Page! **********//
+    bleSetup: function(){
+
+    // scan BLE devices & get connection
+
+      // bLEcallback(param,function(err){
+      //   if(err){
+      //
+      //   }else{
+      //     app.selectOne();
+      //   }
+      // });
+      setTimeout(displayConnection, 1000); ////temporary function for next page
+
+    // display BLE connection results in html
+      function displayConnection(){
+        $('.app').css('display','none');
+        $('#page1').css('display','none');
+        $('#page2').css('display','block');
+        setTimeout(app.selectOne, 1000); ////temporary function for next page
+
+      }
+    },
+
+    //**********p3: choose status-Sender or Recipient **********//
+    selectOne: function(){
+      console.log('selectOne');
+
+    //button display in html
+      $('#page2').css('display','none');
+      $('#page3').css('display','block');
+
+    //if a user chooses 'sender,'
+      $('#page3').on('click', '#sender', app.senderConfig);
+    //if a user chooses 'recipient,'
+      $('#page3').on('click', '#recipient', app.recipientConfig);
+    },
+
+    //**********p4-1: sender configuration- Set up your GGIT box **********//
     senderConfig: function() {
+      console.log('senderConfig');
 
       var appUser;
 
@@ -169,6 +214,7 @@ var app = {
 
     },
 
+    /*
     apigeeConfig: function() {
 
       $('.app').style.display = "none";
@@ -223,4 +269,5 @@ var app = {
       }
       //loadItems(box);
     }
+    */
   };
