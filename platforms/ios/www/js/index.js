@@ -19,7 +19,7 @@
 
 // Data Module for an app
 var dataModule = {
-   "serialNum":"box1",
+   "serialNum":"1234",
    "sender":"example@ggit.com",
    "recipient":"example@ggit.com",
    "goal":[
@@ -70,16 +70,17 @@ var app = {
 
     },
     apigeeConfig: function() {
-      var client = new Apigee.Client({
+
+      var dataclient = new Apigee.Client({
           orgName: 'JessJJ', // Your Apigee.com username for App Services
-          appName: 'GGIT' // Your Apigee App Services app name
+          appName: 'sandbox' // Your Apigee App Services app name
       });
 
       console.log('Apigee client connected');
 
       var box = new Apigee.Collection({
-            "client": client,
-            "type": "boxes"
+            'client': dataclient,
+            'type': 'devices'
       });
 
       function loadItems(collection) {
@@ -89,24 +90,23 @@ var app = {
                       alert("Read failed - loading offline data");
                       collection = client.restoreCollection(localStorage.getItem(collection));
                       collection.resetEntityPointer();
-                      populateList(collection);
+                      displayData(collection);
                   } else {
-                      populateList(collection);
+                      displayData(collection);
                       localStorage.setItem(collection, collection.serialize());
                   }
               }
           );
       }
 
-      function populateList(collection) {
+      function displayData(collection) {
 
+        $('.app').html("");
         while (collection.hasNextEntity()) {
             var item = collection.getNextEntity();
-            var lookup = item.get('serialNum');
-            // if ((lookup) && (lookup.indexOf(appUser.get('uuid')) > -1)) {
-            //     $('#bucketlist li:last').addClass('done');
-            // }
-            console.log(lookup);
+          //  var lookup = item.get('serialNum');
+
+            console.log(item.get('serialNum'));
         }
 
       }
