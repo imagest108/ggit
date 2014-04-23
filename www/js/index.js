@@ -104,9 +104,17 @@ var app = {
         $('.app').html("");
         while (collection.hasNextEntity()) {
             var item = collection.getNextEntity();
-          //  var lookup = item.get('serialNum');
+            var goalobj = item.get('goal');
+            var goalStatement = goalobj.amount;
+            goalStatement += " ";
+            goalStatement += goalobj.dataType;
+            goalStatement += " for ";
+            goalStatement += goalobj.frequency;
+            goalStatement += "days";
 
-            console.log(item.get('serialNum'));
+            $('.app').append('<p>'+goalStatement+'</p>');
+            // console.log(goalobj.amount);
+            // console.log(item.get('goal'));
         }
 
       }
